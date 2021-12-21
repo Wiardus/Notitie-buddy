@@ -27,6 +27,14 @@
 		taskList = taskList
 	}
 
+	let randomNumber = 0
+
+	function diceRoll(min, max) {
+		min = Math.ceil(1);
+   		max = Math.floor(6);
+		randomNumber = Math.floor(Math.random() * (max-min) + min)
+	}
+
 </script>
 
 <Navbar />
@@ -46,6 +54,9 @@
 <span class=deleteBtn on:click={() => deleteTask(index)}>X</span>
 <br/>
 {/each}
+
+<button on:click={diceRoll}>Roll Dice</button>
+<p>{randomNumber}</p>
 
 <style>
 	h1 {
