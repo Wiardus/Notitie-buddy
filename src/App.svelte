@@ -1,73 +1,75 @@
 <script>
-	import Navbar from './Navbar.svelte'
+	import Draggable from './Draggable.svelte';
+	let header = 'Notitie Buddy'
+	let note = ''
+	let noteList = []
 
-	let header = "Ynte's Svelte App";
-	let count = 0
-	const increment = () => {
-		count ++
-	}
-	const decrement = () => {
-		count --
-	}
-	let newTask = ''
-	let taskList = []
-
-	function addTask() {
-		taskList=[...taskList, {text: newTask, completed: false}]
-		if (newTask.length < 1) {
-			alert('Je moet wel iets invullen broer')
-			return
-		} else {
-			return newTask = ''
-		}
+	const addNote = () => {
+		noteList = [...noteList, {text: note, completed: false}]
 	}
 
-	function deleteTask(index) {
-		taskList.splice(index, 1)
-		taskList = taskList
-	}
-
-	let randomNumber = 0
-
-	function diceRoll(min, max) {
-		min = Math.ceil(1);
-   		max = Math.floor(6);
-		randomNumber = Math.floor(Math.random() * (max-min) + min)
+	const deleteNote = (index) => {
+		noteList.splice(index, 1)
+		noteList = noteList
 	}
 
 </script>
 
-<Navbar />
+<div class="noteForm">
+<h1>{header}</h1>
+<input bind:value={note} type="text" placeholder='Typ hier een notitie in...' />
+<button class="addBtn" on:click={addNote}>Notitie toevoegen</button>
+</div>
 
-<h1>{header}!</h1>
-<button on:click={increment}>Increment</button>
-<button on:click={decrement}>Decrement</button>
-<p>{count}</p>
+{#each noteList as note, index}
 
-<input bind:value={newTask} type="text" placeholder="wat moet je doen...">
-<button on:click={addTask}>Add Task</button>
-<br/>
 
-{#each taskList as task, index}
-<input bind:checked={task.completed} type="checkbox">
-<span class:completed={task.completed}>{task.text}</span>
-<span class=deleteBtn on:click={() => deleteTask(index)}>X</span>
-<br/>
+<Draggable><div class:note><input bind:checked={note.completed} type="checkbox" /><button class="delBtn" on:click={() => deleteNote(index)}>X</button><span class:completed={note.completed}>{note.text}</span></div></Draggable>
+
+
+
 {/each}
-
-<button on:click={diceRoll}>Roll Dice</button>
-<p>{randomNumber}</p>
 
 <style>
 	h1 {
-		color: darkgoldenrod;
+		font-weight: bold;
 	}
+	.note {
+		width: 100px;
+		height: 100px;
+		background: #feff9c;
+		font-size: 2em;
+		color: black;
+		text-align: justify;
+	}
+
 	.completed {
 		text-decoration: line-through;
 	}
-	.deleteBtn {
-		cursor:pointer;
-		margin-left: 100px;
-		border: 1px solid #ccc;
+
+	.noteForm {
+		position: static;
+		display: grid;
+		place-content: center;
+	} 
+	.addBtn {
+		background: aliceblue;
+		border-style: none;
+		border-radius: 3%;
+		height: 40px;
+		cursor: pointer;
+		font-size: 1em;
+		color: #001f3f;
 	}
+
+	.addBtn:hover {
+		opacity: 90%;
+	}
+
+	.delBtn {
+		background: none;
+		border-style: none;
+		cursor: pointer;
+	}
+
 </style>
